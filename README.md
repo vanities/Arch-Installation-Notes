@@ -14,15 +14,21 @@ check the hard disks<br>
 ``` fdisk -l ```<p>
 use cfdisk to partition<br>
 ``` cfdisk /dev/sda ```<p>
-/boot /dev/sda1  EFI System            550M<br>
-/     /dev/sda2  Linux x86-64 root     64G<br>
-swap  /dev/sda3  Linux swap            8G<br>
-/home /dev/sda4  Linux                 Rest<br>
+
+| name  | partition |  type               |   size  |
+|-------|-----------|---------------------|---------|
+| /boot | /dev/sda1 |  EFI System         |  550M   |
+| /     | /dev/sda2 |  Linux x86-64 root  |   64G   |
+| swap  | /dev/sda3 |  Linux swap         |  8G     |
+| /home | /dev/sda4 |  Linux              |   Rest  |
+
 <p>
 make fs for linux<br>
-``` mkfs.ext4 /dev/sda2 ```<br>
-``` mkfs.ext4 /dev/sda4 ```<p>
-<br>
+```
+mkfs.ext4 /dev/sda2
+mkfs.ext4 /dev/sda4
+```
+<p>
 make swap on<br>
 ``` mkswap /dev/sda3 ```<br>
 ``` swapon /dev/sda3 ```<p>
