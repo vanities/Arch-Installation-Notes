@@ -58,7 +58,7 @@ This is a step by step guide that I use to install Arch Linux
 
 
 ## Configuration and Installation
-install base system<br>
+#### install base system<br>
 ``` pacstrap /mnt base base-devel```
 
 
@@ -113,9 +113,6 @@ install base system<br>
 #### set up pacman<br>
 ``` nano /etc/pacman.conf ```
 
-
-#### uncomment multilib<br>
-``` pacman -Syu ``
 
 
 #### download sudo<br>
