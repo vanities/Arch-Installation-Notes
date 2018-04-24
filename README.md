@@ -19,68 +19,68 @@ use cfdisk to partition<br>
 swap  /dev/sda3  Linux swap            8G<br>
 /home /dev/sda4  Linux                 Rest<br>
 <br>
-make fs for linux
-``` mkfs.ext4 /dev/sda2 ```
-``` mkfs.ext4 /dev/sda4 ```
-
-make swap on
-``` mkswap /dev/sda3 ```
-``` swapon /dev/sda3 ```
-
-mount rootfs
-``` mount /dev/sda2 /mnt ```
-mount boot
-``` mkdir /mnt/boot ```
-``` mount /dev/sda1 /mnt/boot ```
-mount home
-``` mkdir /mnt/home ```
-``` mount /dev/sda4 /mnt/home ```
-
+make fs for linux<br>
+``` mkfs.ext4 /dev/sda2 ```<br>
+``` mkfs.ext4 /dev/sda4 ```<br>
+<br>
+make swap on<br>
+``` mkswap /dev/sda3 ```<br>
+``` swapon /dev/sda3 ```<br>
+<br>
+mount rootfs<br>
+``` mount /dev/sda2 /mnt ```<br>
+mount boot<br>
+``` mkdir /mnt/boot ```<br>
+``` mount /dev/sda1 /mnt/boot ```<br>
+mount home<br>
+``` mkdir /mnt/home ```<br>
+``` mount /dev/sda4 /mnt/home ```<br>
+<br>
 ## Configuration and Installation
-install base system
-``` pacstrap /mnt base base-devel```
-generated fstab
-``` genfstab -U /mnt >> /mnt/etc/fstab ```
-chroot into system
-``` arch-chroot /mnt ```
-set the timezone
-``` ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime ```
-``` hwclock --systohc ```
-set up locale
-``` echo LANG=en_US.UTF-8 > /etc/locale.conf ```
-``` locale-gen ```
-``` export LANG=en_US.UTF-8 ```
-nano /etc/hostname
-``` echo vanities > /etc/hostname ```
-nano /etc/hosts
-    127.0.0.1	localhost
-    ::1		localhost
-    127.0.1.1	myhostname.localdomain	myhostname
-set up initramfs
-``` mkinitcpio -p linux ```
-set root password
-``` passwd ```
-set up internet
-``` systemctl enable dhcpcd  ```
-set up grub
-``` pacman -S grub efibootmgr dosfstools os-prober mtools ```
-``` mkdir /boot/EFI ```
-``` grub-install --target=x86_64-efi --efi-directory=/boot/efi --recheck ```
-``` grub-mkconfig -o /boot/grub/grub.cfg ```
-set up pacman
-``` nano /etc/pacman.conf ```
-uncomment multilib
-``` pacman -Syu ```
-download sudo
-``` pacman -S sudo ```
-``` visudo ```
-add user
-``` useradd -mg users -G wheel,storage,power -s /bin/zsh vanities ```
-``` passwd your_new_user ```
-change if needed
-install zsh
-``` pacman -S zsh ```
-
+install base system<br>
+``` pacstrap /mnt base base-devel```<br>
+generated fstab<br>
+``` genfstab -U /mnt >> /mnt/etc/fstab ```<br>
+chroot into system<br>
+``` arch-chroot /mnt ```<br>
+set the timezone<br>
+``` ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime ```<br>
+``` hwclock --systohc ```<br>
+set up locale<br>
+``` echo LANG=en_US.UTF-8 > /etc/locale.conf ```<br>
+``` locale-gen ```<br>
+``` export LANG=en_US.UTF-8 ```<br>
+nano /etc/hostname<br>
+``` echo vanities > /etc/hostname ```<br>
+nano /etc/hosts<br>
+    127.0.0.1	localhost<br>
+    ::1		localhost<br>
+    127.0.1.1	myhostname.localdomain	myhostname<br>
+set up initramfs<br>
+``` mkinitcpio -p linux ```<br>
+set root password<br>
+``` passwd ```<br>
+set up internet<br>
+``` systemctl enable dhcpcd  ```<br>
+set up grub<br>
+``` pacman -S grub efibootmgr dosfstools os-prober mtools ```<br>
+``` mkdir /boot/EFI ```<br>
+``` grub-install --target=x86_64-efi --efi-directory=/boot/efi --recheck ```<br>
+``` grub-mkconfig -o /boot/grub/grub.cfg ```<br>
+set up pacman<br>
+``` nano /etc/pacman.conf ```<br>
+uncomment multilib<br>
+``` pacman -Syu ```<br>
+download sudo<br>
+``` pacman -S sudo ```<br>
+``` visudo ```<br>
+add user<br>
+``` useradd -mg users -G wheel,storage,power -s /bin/zsh vanities ```<br>
+``` passwd your_new_user ```<br>
+change if needed<br>
+install zsh<br>
+``` pacman -S zsh ```<br>
+<br>
 ## Post-Installation Programs
 *
 *
