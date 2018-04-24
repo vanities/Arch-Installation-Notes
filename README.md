@@ -10,8 +10,11 @@ update clock<br>
 ``` timedatectl set-ntp true ```<p>
 
 ## Partitioning
-check the hard disks<br>
-``` fdisk -l ```<p>
+check the hard disks
+
+``` fdisk -l ```
+
+
 use cfdisk to partition<br>
 ``` cfdisk /dev/sda ```<p>
 
@@ -24,10 +27,8 @@ use cfdisk to partition<br>
 
 <p>
 make fs for linux<br>
-```
-mkfs.ext4 /dev/sda2
-mkfs.ext4 /dev/sda4
-```
+```mkfs.ext4 /dev/sda2```
+```mkfs.ext4 /dev/sda4```
 <p>
 make swap on<br>
 ``` mkswap /dev/sda3 ```<br>
