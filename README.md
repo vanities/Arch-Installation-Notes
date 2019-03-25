@@ -53,14 +53,17 @@ Download it [here](https://www.archlinux.org/download/).
 #### Boot the live environment
 
 ##### Burn the arch iso to a flash drive
+
 This requires flashing the iso you just downloaded to a usb device, to do so, use this software: [Ethcher](https://www.balena.io/etcher/)
 Etcher is a free iso burner, that takes three clicks to burn an iso, super easy.
 
-##### Boot the drive from your computer 
-Load the usb first in your bios section, [here](https://www.youtube.com/watch?v=xzd73vS9WXo) is a video guide for that.
-[here](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/boot-to-uefi-mode-or-legacy-bios-mode) is a good text guide for that.
--------
+##### Boot the drive from your computer
 
+Load the usb first in your bios section..
+[here](https://www.youtube.com/watch?v=xzd73vS9WXo) is a video guide for that.
+[here](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/boot-to-uefi-mode-or-legacy-bios-mode) is a good text guide for that.
+
+-------
 
 
 #### Set the keyboard layout
@@ -70,65 +73,75 @@ If you're using something other than this, check the instructions out here: [key
 -------
 
 
-
 #### Verify UEFI boot mode
 `$ ls /sys/firmware/efi/efivars`
 Some stuff should print here, if it doesn't, you booted in legacy (BIOS) mode, or your motherboard doesn't support UEFI.
+
 Help can be found [here](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/boot-to-uefi-mode-or-legacy-bios-mode)
+
 -------
 
 
-
-
 #### Connect to the Internet
+
+If you're plugged in to ethernet, you probably already have internet. Verify with this:
+
 `$ ping google.com`
-    
-    
-#### update clock
+
+If you don't know what an ethernet cable is, you're probably using wifi connect to it with this command and follow the prompts:
+
+`$ nmtui`
+
+ -------
+
+
+#### Update the system clock
+This makes sure your clock is synced with any server's clocks
+
 `$ timedatectl set-ntp true`
     
 
-## Partitioning
-#### check the hard disks
+## Partitioning the disks
+
+#### Check your hard disks
+This lists out a table of your connected harddrives and usbs, most harddrives start with sd*
+for example, sda, sdb, sdc, etc.
+
+nvme harddrives start like this:
+nvme01, nvme02, etc.
+
 `$ fdisk -l`
 
 
-#### use cfdisk to partition
+#### Use cfdisk to partition
+Like cutting a pie into different sections, we too but the disk into two sections,
+1. the `/boot` section
+    1. you boot from this section
+2. the `/` or root section
+    1. this is where your system and user files live
+
 `$ cfdisk /dev/sda`
 
 
-
-| name  | partition |  type               |   size  |
-|-------|-----------|---------------------|---------|
-| /boot | /dev/sda1 |  EFI System         |  550M   |
-| /     | /dev/sda2 |  Linux x86-64 root  |   64G   |
-| swap  | /dev/sda3 |  Linux swap         |  8G     |
-| /home | /dev/sda4 |  Linux              |   Rest  |
+| name  | partition |  type               |   size        |
+|-------|-----------|---------------------|---------------|
+| /boot | /dev/sda1 |  EFI System         |  550M         |
+| /     | /dev/sda2 |  Linux x86-64 root  |  Rest of GB   |
 
 
 
-#### make fs for linux<br>
-```mkfs.ext4 /dev/sda2```
-```mkfs.ext4 /dev/sda4```
+#### Make the root directory an ext4 partition
+
+`$ mkfs.ext4 /dev/sda2`
 
 
-#### make swap on<br>
-``` mkswap /dev/sda3 ```<br>
-``` swapon /dev/sda3 ```
+#### Mount the partitions to the Arch USB
+Mount the root filesystem to    `/mnt`
+`$ mount /dev/sda2 /mnt`
 
+After, make a boot folder inside your root filesystem:
+`$ mkdir /mnt/boot`
 
-#### mount rootfs<br>
-``` mount /dev/sda2 /mnt ```
-
-
-#### mount boot<br>
-``` mkdir /mnt/boot ```<br>
-``` mount /dev/sda1 /mnt/boot ```
-
-
-#### mount home<br>
-``` mkdir /mnt/home ```<br>
-``` mount /dev/sda4 /mnt/home ```
 
 
 ## Configuration and Installation
