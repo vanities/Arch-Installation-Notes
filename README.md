@@ -34,13 +34,19 @@ As an overview, here is the Arch Installation guide Table of Contents:
 -------
 
 ## Pre-installation
+
+-----
+
 #### Verify signature of the Arch iso
 
 ##### Download the iso
+
 This requires downloading the arch iso first, lol. 
+
 Download it [here](https://www.archlinux.org/download/).
 
 ##### Verify the iso
+
 >It is recommended to verify the image signature before use, especially when downloading from an HTTP mirror, where downloads are generally prone to be intercepted to serve malicious images. 
 
 >On a system with GnuPG installed, do this by downloading the PGP signature (under Checksums) to the ISO directory, and verifying it with: 
@@ -55,26 +61,33 @@ Download it [here](https://www.archlinux.org/download/).
 ##### Burn the arch iso to a flash drive
 
 This requires flashing the iso you just downloaded to a usb device, to do so, use this software: [Ethcher](https://www.balena.io/etcher/)
+
 Etcher is a free iso burner, that takes three clicks to burn an iso, super easy.
 
 ##### Boot the drive from your computer
 
 Load the usb first in your bios section..
+
 [here](https://www.youtube.com/watch?v=xzd73vS9WXo) is a video guide for that.
+
 [here](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/boot-to-uefi-mode-or-legacy-bios-mode) is a good text guide for that.
 
 -------
 
 
 #### Set the keyboard layout
+
 The keyboard is already set for US.
+
 If you're using something other than this, check the instructions out here: [keyboard layouts](https://wiki.archlinux.org/index.php/Installation_guide#Set_the_keyboard_layout)
 
 -------
 
 
 #### Verify UEFI boot mode
+
 `$ ls /sys/firmware/efi/efivars`
+
 Some stuff should print here, if it doesn't, you booted in legacy (BIOS) mode, or your motherboard doesn't support UEFI.
 
 Help can be found [here](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/boot-to-uefi-mode-or-legacy-bios-mode)
@@ -96,6 +109,7 @@ If you don't know what an ethernet cable is, you're probably using wifi connect 
 
 
 #### Update the system clock
+
 This makes sure your clock is synced with any server's clocks
 
 `$ timedatectl set-ntp true`
@@ -108,17 +122,22 @@ This makes sure your clock is synced with any server's clocks
 -----
 
 #### Check your hard disks
+
 This lists out a table of your connected harddrives and usbs, most harddrives start with sd*
+
 for example, sda, sdb, sdc, etc.
 
 nvme harddrives start like this:
+
 nvme01, nvme02, etc.
 
 `$ fdisk -l`
 
 
 #### Use cfdisk to partition
+
 Like cutting a pie into different sections, we too but the disk into two sections,
+
 1. the `/boot` section
     1. you boot from this section
 2. the `/` or root section
@@ -140,6 +159,7 @@ Like cutting a pie into different sections, we too but the disk into two section
 
 
 ##### Mount the partitions to the Arch USB
+
 Mount the root filesystem to `/mnt`
 
 `$ mount /dev/sda2 /mnt`
@@ -211,8 +231,11 @@ This is for Central time, for your time, check the Time Zone link at the header.
 -----
 
 #### Set up the [Locale](https://wiki.archlinux.org/index.php/Locale)
+
 `$ echo LANG=en_US.UTF-8 > /etc/locale.conf`
+
 `$ locale-gen `
+
 `$ export LANG=en_US.UTF-8`
 
 
@@ -256,12 +279,16 @@ Ex: `vanities`
 
 #### Set up internet
 
-``` systemctl enable dhcpcd  ```
+`$ systemctl enable dhcpcd`
+
 
 
 #### Install and Set up grub
+
 `$ pacman -S grub efibootmgr dosfstools os-prober mtools`
+
 `$ grub-install --target=x86_64-efi --efi-directory=/boot/efi --recheck`
+
 `$ grub-mkconfig -o /boot/grub/grub.cfg`
 
 
@@ -281,7 +308,9 @@ Ex: `vanities`
 
 
 #### add user
+
 `$ useradd -mg users -G wheel -s /bin/zsh {enter your user here}`
+
 `$ passwd {enter your user here}`
 
 
