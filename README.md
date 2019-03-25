@@ -1,26 +1,100 @@
-# Arch-Installation-Notes
-This is a step by step guide that I use to install Arch Linux
+# Relevant one stop shop for Arch Installations
+This is a step by step guide that I use to install Arch Linux, this is with [UEFI](https://wiki.archlinux.org/index.php/Unified_Extensible_Firmware_Interface).
 
-## Initialization
-#### check uefi boot mode<br>
-``` ls /sys/firmware/efi/efivars ```
+As an overview, here is the Arch Installation guide Table of Contents:
+1. Pre-installation
+    1. Verify signature
+    2. Boot the live environment
+    3. Set the keyboard layout
+    4. Verify the boot mode
+    5. Connect to the internet
+    6. Update the system clock
+    7. Partition the disks
+        1. Example layouts
+    8. Format the partitions
+    9. Mount the file systems
+
+2. Installation
+    1. Select the mirrors
+    2. Install the base packages
+
+3. Configure the system
+    1. Fstab
+    2. Chroot
+    3. Time zone
+    4. Localization
+    5. Network configuration
+    6. Initramfs
+    7. Root password
+    8. Boot loader
 
 
-#### check internet<br>
-``` ping google.com ```
+4. Reboot
+5. Post-installation
+-------
+
+## Pre-installation
+#### Verify signature of the Arch iso
+
+##### Download the iso
+This requires downloading the arch iso first, lol. 
+Download it [here](https://www.archlinux.org/download/).
+
+##### Verify the iso
+>It is recommended to verify the image signature before use, especially when downloading from an HTTP mirror, where downloads are generally prone to be intercepted to serve malicious images. 
+
+>On a system with GnuPG installed, do this by downloading the PGP signature (under Checksums) to the ISO directory, and verifying it with: 
+
+`$ gpg --keyserver pgp.mit.edu --keyserver-options auto-key-retrieve --verify archlinux-version-x86_64.iso.sig`
+
+-------
+
+
+#### Boot the live environment
+
+##### Burn the arch iso to a flash drive
+This requires flashing the iso you just downloaded to a usb device, to do so, use this software: [Ethcher](https://www.balena.io/etcher/)
+Etcher is a free iso burner, that takes three clicks to burn an iso, super easy.
+
+##### Boot the drive from your computer 
+Load the usb first in your bios section, [here](https://www.youtube.com/watch?v=xzd73vS9WXo) is a video guide for that.
+[here](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/boot-to-uefi-mode-or-legacy-bios-mode) is a good text guide for that.
+-------
+
+
+
+#### Set the keyboard layout
+The keyboard is already set for US.
+If you're using something other than this, check the instructions out here: [keyboard layouts](https://wiki.archlinux.org/index.php/Installation_guide#Set_the_keyboard_layout)
+
+-------
+
+
+
+#### Verify UEFI boot mode
+`$ ls /sys/firmware/efi/efivars`
+Some stuff should print here, if it doesn't, you booted in legacy (BIOS) mode, or your motherboard doesn't support UEFI.
+Help can be found [here](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/boot-to-uefi-mode-or-legacy-bios-mode)
+-------
+
+
+
+
+#### Connect to the Internet
+`$ ping google.com`
     
     
-#### update clock<br>
-``` timedatectl set-ntp true ```
+#### update clock
+`$ timedatectl set-ntp true`
     
 
 ## Partitioning
-#### check the hard disks<br>
-``` fdisk -l ```
+#### check the hard disks
+`$ fdisk -l`
 
 
-#### use cfdisk to partition<br>
-``` cfdisk /dev/sda ```
+#### use cfdisk to partition
+`$ cfdisk /dev/sda`
 
 
 
