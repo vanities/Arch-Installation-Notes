@@ -99,9 +99,13 @@ If you don't know what an ethernet cable is, you're probably using wifi connect 
 This makes sure your clock is synced with any server's clocks
 
 `$ timedatectl set-ntp true`
+
+------
     
 
 ## Partitioning the disks
+
+-----
 
 #### Check your hard disks
 This lists out a table of your connected harddrives and usbs, most harddrives start with sd*
@@ -135,86 +139,158 @@ Like cutting a pie into different sections, we too but the disk into two section
 `$ mkfs.ext4 /dev/sda2`
 
 
-#### Mount the partitions to the Arch USB
-Mount the root filesystem to    `/mnt`
+##### Mount the partitions to the Arch USB
+Mount the root filesystem to `/mnt`
+
 `$ mount /dev/sda2 /mnt`
 
-After, make a boot folder inside your root filesystem:
-`$ mkdir /mnt/boot`
+After, make a boot inside your root filesystem and an efi folder inside of that:
+
+`$ mkdir /mnt/boot /mnt/boot/efi`
+
+Mount your boot drive to `/mnt/boot/efi`
+
+`$ mount /dev/sda1 /mnt/boot/efi`
+
+-----
+
+## Installation
+
+-----
+
+#### Select your mirror
+
+Check out the mirrors in `/etc/pacman.d/mirrorlist`
+
+`$ vim /etc/pacman.d/mirrorlist`
+
+take the line that has the mirror closest to you and put it at the top of the file, uncommented.
+Ex with `cat`:
+`$ cat /etc/pacman.d/mirrorlist`
+
+```
+Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch
+```
+
+More info [here](https://wiki.archlinux.org/index.php/mirrors#Enabling_a_specific_mirror)
+
+------
+
+#### Install the base and base-devel packages
+
+`$ pacstrap /mnt base base-devel`
+
+-----
+
+## Configure your system
 
 
+#### Generate your [fstab](https://wiki.archlinux.org/index.php/Fstab)
 
-## Configuration and Installation
-#### install base system<br>
-``` pacstrap /mnt base base-devel```
+`$ genfstab -U /mnt >> /mnt/etc/fstab `
+
+`-U` is by [UUID](https://wiki.archlinux.org/index.php/UUID), it's more consistent than `-L` which is label
+
+-----
+
+#### [Chroot](https://wiki.archlinux.org/index.php/Change_root) into your system
+
+`$ arch-chroot /mnt `
+
+This puts you into your filesystem (mounted on the USB)
+
+-----
+
+#### Set the [Time Zone](https://wiki.archlinux.org/index.php/Time_zone)
+
+`$ ln -sf /usr/share/zonefo/America/Chicago /etc/localtime`
+`$ hwclock --systohc `
+
+This is for Central time, for your time, check the Time Zone link at the header.
+
+-----
+
+#### Set up the [Locale](https://wiki.archlinux.org/index.php/Locale)
+`$ echo LANG=en_US.UTF-8 > /etc/locale.conf`
+`$ locale-gen `
+`$ export LANG=en_US.UTF-8`
 
 
-#### generated fstab<br>
-``` genfstab -U /mnt >> /mnt/etc/fstab ```
+-----
+
+#### Network Configuration
 
 
-#### chroot into system<br>
-``` arch-chroot /mnt ```
+-----
+
+##### Create a [hostname](https://wiki.archlinux.org/index.php/Hostname)
+
+`$ {enter your hostanme here) > /etc/hostname`
+
+Your hostname is the word that comes after the @ in your terminal, enter your hostnmae in the `{enter your hostanme here)`
+
+Ex: `vanities`
+
+`user@vanities`
+
+-----
 
 
-#### set the timezone<br>
-``` ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime ```<br>
-``` hwclock --systohc ```
+##### Set your /etc/hosts
 
-
-#### set up locale<br>
-``` echo LANG=en_US.UTF-8 > /etc/locale.conf ```<br>
-``` locale-gen ```<br>
-``` export LANG=en_US.UTF-8 ```
-
-
-#### nano /etc/hostname<br>
-``` echo vanities > /etc/hostname ```
-
-
-#### nano /etc/hosts<br>
-> 127.0.0.1	localhost<br>
-> ::1		localhost<br>
-> 127.0.1.1	myhostname.localdomain	myhostname
+`$ printf "127.0.0.1	localhost" > /etc/hosts` 
     
     
-#### set up initramfs<br>
-``` mkinitcpio -p linux ```
+-----
+    
+#### Set up [initramfs](https://wiki.archlinux.org/index.php/Mkinitcpio)<br>
+
+`$ mkinitcpio -p linux`
+
+-----
+
+#### Set your root password
+
+`$ passwd`
 
 
-#### set root password<br>
-``` passwd ```
+#### Set up internet
 
-
-#### set up internet<br>
 ``` systemctl enable dhcpcd  ```
 
 
-#### set up grub<br>
-``` pacman -S grub efibootmgr dosfstools os-prober mtools ```<br>
-``` mkdir /boot/EFI ```<br>
-``` grub-install --target=x86_64-efi --efi-directory=/boot/efi --recheck ```<br>
-``` grub-mkconfig -o /boot/grub/grub.cfg ```
+#### Install and Set up grub
+`$ pacman -S grub efibootmgr dosfstools os-prober mtools`
+`$ grub-install --target=x86_64-efi --efi-directory=/boot/efi --recheck`
+`$ grub-mkconfig -o /boot/grub/grub.cfg`
 
 
-#### set up pacman<br>
-``` nano /etc/pacman.conf ```
+#### Set up Pacman
+
+`$ nano /etc/pacman.conf`
+
+-----
+
+#### download sudo
+
+`$ pacman -S sudo`
+
+`$ visudo`
+
+-----
 
 
-
-#### download sudo<br>
-``` pacman -S sudo ```<br>
-``` visudo ```
-
-
-#### add user<br>
-``` useradd -mg users -G wheel,storage,power -s /bin/zsh vanities ```<br>
-``` passwd your_new_user ```
+#### add user
+`$ useradd -mg users -G wheel -s /bin/zsh {enter your user here}`
+`$ passwd {enter your user here}`
 
 
-#### install zsh<br>
-``` pacman -S zsh ```
+-----
 
+#### install zsh
+`$ pacman -S zsh`
+
+-----
 
 ## Post-Installation Programs
 *
