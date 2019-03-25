@@ -31,11 +31,9 @@ As an overview, here is the Arch Installation guide Table of Contents:
 
 4. Reboot
 5. Post-installation
--------
+
 
 ## Pre-installation
-
------
 
 #### Verify signature of the Arch iso
 
@@ -49,11 +47,11 @@ Download it [here](https://www.archlinux.org/download/).
 
 >It is recommended to verify the image signature before use, especially when downloading from an HTTP mirror, where downloads are generally prone to be intercepted to serve malicious images. 
 
->On a system with GnuPG installed, do this by downloading the PGP signature (under Checksums) to the ISO directory, and verifying it with: 
+>On a system with GnuPG installed, do this by downloading the PGP signature (under Checksums) to the ISO directory, and verifying it with this example code below.
 
+Example:
 `$ gpg --keyserver pgp.mit.edu --keyserver-options auto-key-retrieve --verify archlinux-version-x86_64.iso.sig`
 
--------
 
 
 #### Boot the live environment
@@ -114,12 +112,9 @@ This makes sure your clock is synced with any server's clocks
 
 `$ timedatectl set-ntp true`
 
-------
     
 
 ## Partitioning the disks
-
------
 
 #### Check your hard disks
 
@@ -172,11 +167,8 @@ Mount your boot drive to `/mnt/boot/efi`
 
 `$ mount /dev/sda1 /mnt/boot/efi`
 
------
 
 ## Installation
-
------
 
 #### Select your mirror
 
@@ -238,13 +230,7 @@ This is for Central time, for your time, check the Time Zone link at the header.
 
 `$ export LANG=en_US.UTF-8`
 
-
------
-
 #### Network Configuration
-
-
------
 
 ##### Create a [hostname](https://wiki.archlinux.org/index.php/Hostname)
 
@@ -298,30 +284,33 @@ Ex: `vanities`
 
 -----
 
-#### download sudo
+#### Download System Files:
 
-`$ pacman -S sudo`
+`$ pacman -S sudo zsh fish`
 
 `$ visudo`
 
 -----
 
 
-#### add user
+#### Add a useruser
 
 `$ useradd -mg users -G wheel -s /bin/zsh {enter your user here}`
 
 `$ passwd {enter your user here}`
 
 
------
-
-#### install zsh
-`$ pacman -S zsh`
-
------
 
 ## Post-Installation Programs
 *
 *
 
+## Finishing touches
+
+#### Unmount and Reboot
+
+Press `Ctrl + D` to exit the chroot
+
+Unmount the partitions and reboot:
+
+`$ unmount -R / && reboot`
